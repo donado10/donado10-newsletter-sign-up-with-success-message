@@ -10,3 +10,22 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 }
+
+@layer components {
+  .custom-gradient {
+    background: linear-gradient(
+      to right,
+      #ec4899,
+      #ef4444
+    ); /* Pink to Red gradient */
+    color: white;
+    border: none;
+    font-weight: 600; /* Semi-bold text */
+    cursor: pointer;
+    box-shadow:
+      rgba(236, 72, 153, 0.25) 0px 14px 28px,
+      rgba(236, 72, 153, 0.22) 0px 10px 10px; /* Pinkish shadow */
+
+    transition: background 0.3s ease;
+  }
+}

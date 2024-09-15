@@ -15,7 +15,7 @@ const Subscribe: React.FC<{
   const isMobile = useMediaQuery(MediaQuery.MOBILE);
   const isBig = useMediaQuery(MediaQuery.BIG);
 
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const [formFocus, setFormFocus] = useState<boolean>(false);
 
   const {
     register,
@@ -82,7 +82,7 @@ const Subscribe: React.FC<{
               )}
             </div>
             <div
-              className={`w-full rounded-lg border border-[#D8D8D8] p-3 px-4 ${errors.mail && "border-red-600 bg-red-600/15"}`}
+              className={`w-full rounded-lg border border-[#D8D8D8] p-3 px-4 ${errors.mail && "border-red-600 bg-red-600/15"} ${formFocus && "border-primary"}`}
             >
               <input
                 id="mail"
@@ -94,11 +94,13 @@ const Subscribe: React.FC<{
                   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 })}
                 name="mail"
+                onFocus={() => setFormFocus(true)}
+                onBlur={() => setFormFocus(false)}
               />
             </div>
           </div>
           <button
-            className="w-full rounded-lg bg-secondary p-2 text-white"
+            className="hover:custom-gradient w-full rounded-lg bg-secondary p-2 text-white"
             onClick={handleSubmit(submitHandler)}
           >
             <span className="text-sm font-bold">
@@ -129,7 +131,7 @@ const SubscribeSuccess: React.FC<{
         button inside to confirm your subscription
       </h2>
       <button
-        className="mt-auto w-full self-end rounded-lg bg-secondary p-2 text-white md:mt-0"
+        className="hover:custom-gradient mt-auto w-full self-end rounded-lg bg-secondary p-2 text-white md:mt-0"
         onClick={() => {
           onSubscribeHandler({ isSuccess: false, mail: null });
         }}
