@@ -5,7 +5,7 @@ import IconSuccess from "./assets/images/icon-success.svg";
 
 import useMediaQuery from "./Shared/useMediaQuery";
 import { MediaQuery } from "./Shared/useMediaQuery";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
