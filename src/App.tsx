@@ -7,6 +7,8 @@ import useMediaQuery from "./Shared/useMediaQuery";
 import { MediaQuery } from "./Shared/useMediaQuery";
 import { useRef, useState } from "react";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+
 const Subscribe: React.FC<{
   onSubscribeHandler: React.Dispatch<ISubscribe>;
 }> = ({ onSubscribeHandler }) => {
@@ -14,6 +16,20 @@ const Subscribe: React.FC<{
   const isBig = useMediaQuery(MediaQuery.BIG);
 
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<{ mail: string }>();
+
+  const submitHandler: SubmitHandler<{ mail: string }> = () => {
+    onSubscribeHandler({
+      isSuccess: true,
+      mail: getValues().mail,
+    });
+  };
 
   return (
     <div className="bg-white md:flex md:aspect-[1/0.6] md:w-[47rem] md:rounded-xl md:p-4">
@@ -52,37 +68,38 @@ const Subscribe: React.FC<{
         </div>
         <form
           className="flex flex-col gap-5 rounded-xl"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubscribeHandler({
-              isSuccess: true,
-              mail: inputRef.current.value,
-            });
-          }}
+          onSubmit={handleSubmit(submitHandler)}
         >
           <div className="flex flex-col justify-center gap-2">
-            <label htmlFor="mail" className="font-bold">
-              Email address
-            </label>
-            <div className="w-full rounded-lg border border-[#D8D8D8] p-3 px-4">
+            <div className="flex items-center justify-between">
+              <label htmlFor="mail" className="font-bold">
+                Email address
+              </label>
+              {errors.mail && (
+                <span className="text-[0.7rem] font-bold text-red-600">
+                  Valid email required
+                </span>
+              )}
+            </div>
+            <div
+              className={`w-full rounded-lg border border-[#D8D8D8] p-3 px-4 ${errors.mail && "border-red-600 bg-red-600/15"}`}
+            >
               <input
                 id="mail"
                 type="text"
                 placeholder="email@company.com"
-                className="w-full outline-none"
-                ref={inputRef}
+                className={`w-full bg-transparent outline-none ${errors.mail && "text-red-600"}`}
+                {...register("mail", {
+                  required: true,
+                  pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                })}
+                name="mail"
               />
             </div>
           </div>
           <button
             className="w-full rounded-lg bg-secondary p-2 text-white"
-            onClick={(e) => {
-              e.preventDefault();
-              onSubscribeHandler({
-                isSuccess: true,
-                mail: inputRef.current.value,
-              });
-            }}
+            onClick={handleSubmit(submitHandler)}
           >
             <span className="text-sm font-bold">
               Subscribe to monthly newsletter
