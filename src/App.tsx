@@ -126,7 +126,7 @@ const SubscribeSuccess: React.FC<{
         Thanks for subscribing!
       </h1>
       <h2>
-        A confirmation email has been sent to
+        A confirmation email has been sent to{" "}
         <span className="font-bold">{mail}</span>. Please open it and click the
         button inside to confirm your subscription
       </h2>
